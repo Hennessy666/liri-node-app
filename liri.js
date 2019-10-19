@@ -1,5 +1,4 @@
-
-require("dotenv").config();
+const dotenv = require("dotenv").config();
 
 var keys = require("./keys.js");
 
