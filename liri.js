@@ -17,36 +17,50 @@ var spotify = new Spotify(keys.spotify);
 
 
 //Returns the artists name
-var getArtists = function(artist){
+var getArtists = function (artist) {
     return artist.name;
 };
 
 // function for searching for a Spotify song
 var spotifySong = function (songName) {
-    if (songName === undefined){
+    if (songName === undefined) {
         songName = "Eye of the Tiger";
     }
     spotify.search(
-        { type: 'track',
-         query: 'song',
-        limit: 1 },
+        {
+            type: 'track',
+            query: 'song',
+            limit: 1
+        },
 
-        function(err, song) {
+        function (err, song) {
             console.log(song + "songData.name")
-          }) else {
-            console.log('Error!' + err);
-            return;
-        };
+             else {
+    console.log('Error!' + err);
+    return;
+}
 
-        var songs = data.tracks.items;
+var songs = data.tracks.items;
 
-        for (var )
+for (var i = 0; i < songs.length; i++) {
+    console.log(i);
+    console.log("artist(s)" + songs[i].artists.map(getArtists));
+    console.log("song name: " + songs[i].name);
+    console.log("preview song: " + songs[i].preview_url);
+    console.log("album: " + songs[i].album.name);
+    console.log("-----------------------------------");
+}
+    }
+    )};
 
-function movieOMBD(movie) {
 
-    var movieQuery = movie || "Mr. Nobody";
+//function for running a movie search
+var getMovies = function(movie) {
 
-    axios.get("http://www.omdbapi.com/?t=" + movieQuery + "&y=&plot=short&tomatoes=true&apikey=trilogy").then(function (response) {
+   if( movie || "Mr. Nobody");
+
+
+    axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&tomatoes=true&apikey=trilogy").then(function (response) {
         var movieData =
             "--------------------------------------------------------------------" +
             "\nTitle:" + jsonData.Title +
