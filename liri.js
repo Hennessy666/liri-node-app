@@ -16,14 +16,31 @@ var fs = require("fs");
 var spotify = new Spotify(keys.spotify);
 
 
-function spotifySong(song) {
-    spotify.search({ type: 'track', query: song, limit: 1 })
-        .then(function (response) {
-            console.log("Song:" + songData.name)
-        } else {
-            console.log('Error!');
-        })
-}
+//Returns the artists name
+var getArtists = function(artist){
+    return artist.name;
+};
+
+// function for searching for a Spotify song
+var spotifySong = function (songName) {
+    if (songName === undefined){
+        songName = "Eye of the Tiger";
+    }
+    spotify.search(
+        { type: 'track',
+         query: 'song',
+        limit: 1 },
+
+        function(err, song) {
+            console.log(song + "songData.name")
+          }) else {
+            console.log('Error!' + err);
+            return;
+        };
+
+        var songs = data.tracks.items;
+
+        for (var )
 
 function movieOMBD(movie) {
 
