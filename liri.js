@@ -55,9 +55,9 @@ for (var i = 0; i < songs.length; i++) {
 
 
 //function for running a movie search
-var getMovies = function(movie) {
+var getMovies = function (movie) {
 
-   if( movie || "Mr. Nobody");
+    if (movie || "Mr. Nobody");
 
 
     axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&tomatoes=true&apikey=trilogy").then(function (response) {
@@ -77,4 +77,81 @@ var getMovies = function(movie) {
             console.log(error);
         });
 
-}
+};
+
+var getBands = function(artist) {
+    var bandURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
+
+    axios.get(bandURL).then(
+        function(response) {
+          var jsonData = response.data;
+    
+          if (!jsonData.length) {
+            console.log("No results found for " + artist);
+            return;
+          }
+    
+          console.log("Upcoming concerts for " + artist + ":");
+
+          for (var i = 0; i < jsonData.length; i++) {
+            var show = jsonData[i];
+            console.log(
+              show.venue.city +
+                "," +
+                (show.venue.region || show.venue.country) +
+                " at " +
+                show.venue.name +
+                " " +
+                moment(show.datetime).format("MM/DD/YYYY")
+            );
+          }
+        }
+      );
+    };
+    
+// Function for running a command based on text file
+var textCommand = function() {
+    fs.readFile("random.txt", "utf8", function(error, data) {
+      console.log(data);
+  
+      var dataArr = data.split(",");
+  
+      if (dataArr.length === 2) {
+        pick(dataArr[0], dataArr[1]);
+      } else if (dataArr.length === 1) {
+        pick(dataArr[0]);
+      }
+    });
+  };
+  
+
+// Function for determining which command is executed
+var pick = function(caseData, functionData) {
+    switch (caseData) {
+    case "concert-this":
+      getMyBands(functionData);
+      break;
+    case "spotify-this-song":
+      getMeSpotify(functionData);
+      break;
+    case "movie-this":
+      getMeMovie(functionData);
+      break;
+    case "do-what-it-says":
+      doWhatItSays();
+      break;
+    default:
+      console.log("LIRI doesn't know that");
+    }
+  };
+  
+
+// Function which takes in command line arguments and executes correct function accordingly
+var runThis = function(argOne, argTwo) {
+    pick(argOne, argTwo);
+  };
+  
+  // MAIN PROCESS
+  // =====================================
+  runThis(process.argv[2], process.argv.slice(3).join(" "));
+  
