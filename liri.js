@@ -13,7 +13,14 @@ var moment = require("moment");
 //import the FS package for read/write
 var fs = require("fs");
 //initialize the spotify API client using our client id and scret
-var spotify = new Spotify(keys.spotify);
+const {
+    id, secret
+} = keys.spotify
+
+var spotify = new Spotify({
+    id, secret
+});
+console.log(keys)
 
 
 //Returns the artists name
@@ -28,40 +35,40 @@ var spotifySong = function (songName) {
     }
     spotify.search(
         {
-            type: 'track',
-            query: 'song',
+            type: "track",
+            query: songName,
             limit: 1
         },
 
         function (err, song) {
+            if (err) {
+                console.log('Error!' + err);
+                return;
+            }
             console.log(song + "songData.name")
-             else {
-    console.log('Error!' + err);
-    return;
-}
 
-var songs = data.tracks.items;
 
-for (var i = 0; i < songs.length; i++) {
-    console.log(i);
-    console.log("artist(s)" + songs[i].artists.map(getArtists));
-    console.log("song name: " + songs[i].name);
-    console.log("preview song: " + songs[i].preview_url);
-    console.log("album: " + songs[i].album.name);
-    console.log("-----------------------------------");
-}
-    }
-    )};
+            var songs = data.tracks.items;
+
+            for (var i = 0; i < songs.length; i++) {
+                console.log(i);
+                console.log("artist(s)" + songs[i].artists.map(getArtists));
+                console.log("song name: " + songs[i].name);
+                console.log("preview song: " + songs[i].preview_url);
+                console.log("album: " + songs[i].album.name);
+                console.log("-----------------------------------");
+            }
+        }
+    )
+};
 
 
 //function for running a movie search
 var getMovies = function (movie) {
 
-    if (movie || "Mr. Nobody");
-
-
     axios.get("http://www.omdbapi.com/?t=" + movie + "&y=&plot=short&tomatoes=true&apikey=trilogy").then(function (response) {
-        var movieData =
+    var jsonData = response.data; 
+        var movie =
             "--------------------------------------------------------------------" +
             "\nTitle:" + jsonData.Title +
             "\nYear:" + jsonData.Year +
@@ -71,13 +78,11 @@ var getMovies = function (movie) {
             "\nPlot:" + jsonData.plot +
             "\nRotten Tomatoes Rating:" + jsonData.Ratings[1] +
             "\nCast:" + jsonData.Actors;
-        console.log(movieData);
+        console.log(movie);
     })
-        .catch(function (error) {
-            console.log(error);
-        });
-
 };
+
+
 
 var getBands = function (artist) {
     var bandURL = "https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp";
@@ -129,16 +134,16 @@ var textCommand = function () {
 var pick = function (caseData, functionData) {
     switch (caseData) {
         case "concert-this":
-            getMyBands(functionData);
+            getBands(functionData);
             break;
         case "spotify-this-song":
-            getMeSpotify(functionData);
+            spotifySong(functionData);
             break;
         case "movie-this":
-            getMeMovie(functionData);
+            getMovies(functionData);
             break;
         case "do-what-it-says":
-            doWhatItSays();
+            textCommand();
             break;
         default:
             console.log("LIRI doesn't know that");
